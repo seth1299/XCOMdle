@@ -1,177 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ability Search</title>
     <style>
-        /* Style the search bar */
-        #abilitySearch {
-            width: 300px;
-            padding: 8px;
-            font-size: 16px;
-        }
+      /* Style the search bar */
+      #abilitySearch {
+        width: 300px;
+        padding: 8px;
+        font-size: 16px;
+      }
 
-        /* Style the dropdown menu */
-        #dropdown {
-            border: 1px solid #ccc;
-            width: 300px;
-            max-height: 150px; /* Limit the height */
-            overflow-y: auto;  /* Enable scroll if the list is long */
-            background-color: white;
-            position: absolute; /* Position it below the input field */
-            z-index: 1000; /* Ensure it's above other elements */
-            display: none; /* Hide the dropdown initially */
-        }
+      body {
+        background-color: black;
+        color: white;
+        font-size: 18px; /* Adjust this to your preference */
+        text-align: center;
+      }
 
-        /* Style each list item in the dropdown */
-        #dropdown li {
-            list-style: none;
-            padding: 8px;
-            cursor: pointer;
-            border-bottom: 1px solid #ccc;
-        }
+      #settingsMenu {
+        display: none; /* Hide settings menu by default */
+        position: absolute; /* Allow it to float above other content */
+        top: 10%; /* Position from the top */
+        right: 10%; /* Position from the right */
+        background-color: white; /* White background for settings menu */
+        color: black; /* Black text color for settings menu */
+        border: 1px solid #ccc; /* Optional: add a border */
+        padding: 10px; /* Add some padding */
+        z-index: 1000; /* Make sure it’s above other content */
+      }
 
-        /* Add hover effect to each list item */
-        #dropdown li:hover {
-            background-color: #f0f0f0;
-        }
+      .settingsButton {
+        position: absolute;
+        top: 10px; /* Position it at the top */
+        right: 10px; /* Align it to the right */
+        background-color: white; /* Button background */
+        color: black; /* Button text color */
+        border: 1px solid black; /* Button border */
+        cursor: pointer; /* Change cursor to pointer on hover */
+      }
+
+      /* Add hover effects for better UX */
+      .settingsButton:hover {
+        background-color: #f0f0f0; /* Lighten on hover */
+      }
+
+      /* Center the dropdown menu */
+#dropdownMenu {
+    display: inline-block; /* Aligns the dropdown to be inline */
+    background-color: black; /* Set background color to black */
+    color: white; /* Set text color to white for readability */
+    border: 1px solid white; /* Optional: add a border for visibility */
+    padding: 5px; /* Add padding for better appearance */
+}
+
+/* Additional styles for the search box */
+#searchBox {
+    display: inline-block; /* Aligns the search box to be inline */
+    background-color: black; /* Set background color to black */
+    color: white; /* Set text color to white for readability */
+    border: 1px solid white; /* Optional: add a border for visibility */
+    padding: 5px; /* Add padding for better appearance */
+}
+
+/* Centering the container for both search box and dropdown */
+#searchAndDropdownContainer {
+    text-align: center; /* Center-aligns the search and dropdown elements */
+    margin: 20px 0; /* Add some margin for spacing */
+}
+
+      /* Style each list item in the dropdown */
+      #dropdown li {
+        list-style: none;
+        padding: 8px;
+        cursor: pointer;
+        border-bottom: 1px solid #ccc;
+      }
+
+      /* Add hover effect to each list item */
+      #dropdown li:hover {
+        background-color: #f0f0f0;
+      }
     </style>
-</head>
-<body>
+
+
+
+    <!-- Settings button -->
+    <button class="settingsButton" onclick="toggleSettingsMenu()">
+      Settings
+    </button>
+
+    <!-- Settings menu -->
+    <div id="settingsMenu">
+      <h3>Settings</h3>
+      <label for="fontSelect">Font:</label>
+      <select id="fontSelect" onchange="changeFont()">
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+      <br /><br />
+      <label for="fontSize">Font Size:</label>
+      <input
+        type="number"
+        id="fontSize"
+        value="16"
+        onchange="changeFontSize()"
+      />
+      <br /><br />
+      <label for="fontColor">Font Color:</label>
+      <input type="color" id="fontColor" onchange="changeFontColor()" />
+      <br /><br />
+      <label for="backgroundColor">Background Color:</label>
+      <input
+        type="color"
+        id="backgroundColor"
+        onchange="changeBackgroundColor()"
+      />
+      <br /><br />
+      <button onclick="toggleSettingsMenu()">Close</button>
+    </div>
+    
+  </head>
+  <body>
     <h1>Search for an XCOM Ability</h1>
-    <input type="text" id="abilitySearch" placeholder="Search abilities..." oninput="searchAbilities(this.value)" />
+    <input
+      type="text"
+      id="abilitySearch"
+      placeholder="Search abilities..."
+      oninput="searchAbilities(this.value)"
+    />
 
     <ul id="dropdown"></ul>
 
     <script>
+      function toggleSettingsMenu() {
+        const menu = document.getElementById("settingsMenu");
+        menu.style.display =
+          menu.style.display === "none" || menu.style.display === ""
+            ? "block"
+            : "none";
+      }
 
-    function getRandomAbility() {
-    fetch('/random_ability')
-        .then(response => response.json())
-        .then(data => {
+      function changeFont() {
+        const selectedFont = document.getElementById("fontSelect").value;
+        document.body.style.fontFamily = selectedFont;
+      }
+
+      function changeFontSize() {
+        const newSize = document.getElementById("fontSize").value;
+        document.body.style.fontSize = newSize + "px"; // Add 'px' to the value
+      }
+
+      function changeFontColor() {
+        const newColor = document.getElementById("fontColor").value;
+        document.body.style.color = newColor; // Change text color
+      }
+
+      function changeBackgroundColor() {
+        const newColor = document.getElementById("backgroundColor").value;
+        document.body.style.backgroundColor = newColor; // Change background color
+      }
+
+      function getRandomAbility() {
+        fetch("/random_ability")
+          .then((response) => response.json())
+          .then((data) => {
             if (data.error) {
-                alert(data.error);  // Show an alert if no ability is found
+              alert(data.error); // Show an alert if no ability is found
             } else {
-                let randomAbilityName = data.ability;
-                let randomAbilityClass = data.class;
-                let randomAbilityRank = data.rank;
-                let randomAbilityGame1 = data.game1;
-                let randomAbilityGame2 = data.game2;
-                //console.log(randomAbilityName, ", ", randomAbilityClass, ", ", randomAbilityRank, ", ", randomAbilityGame1, ", ", randomAbilityGame2);
-                
-                // Display the random ability details (name, class, rank, games)
-                document.getElementById('randomAbilityName').innerHTML = data.ability;
-                document.getElementById('randomAbilityClass').innerHTML = data.class;
-                document.getElementById('randomAbilityRank').innerHTML = data.rank;
-                document.getElementById('randomAbilityGame1').innerHTML = data.game1;
-                document.getElementById('randomAbilityGame2').innerHTML = data.game2;
+              let randomAbilityName = data.ability;
+              let randomAbilityClass = data.class;
+              let randomAbilityRank = data.rank;
+              let randomAbilityGame1 = data.game1;
+              let randomAbilityGame2 = data.game2;
+              //console.log(randomAbilityName, ", ", randomAbilityClass, ", ", randomAbilityRank, ", ", randomAbilityGame1, ", ", randomAbilityGame2);
+
+              // Display the random ability details (name, class, rank, games)
+              document.getElementById("randomAbilityName").innerHTML =
+                data.ability;
+              document.getElementById("randomAbilityClass").innerHTML =
+                data.class;
+              document.getElementById("randomAbilityRank").innerHTML =
+                data.rank;
+              document.getElementById("randomAbilityGame1").innerHTML =
+                data.game1;
+              document.getElementById("randomAbilityGame2").innerHTML =
+                data.game2;
             }
-        })
-        .catch(error => console.error('Error fetching random ability:', error));
-}
+          })
+          .catch((error) =>
+            console.error("Error fetching random ability:", error)
+          );
+      }
 
-
-    document.addEventListener("DOMContentLoaded", function() {
+      document.addEventListener("DOMContentLoaded", function () {
         getRandomAbility();
         console.log(randomAbilityName);
+      });
 
-        //console.log(randomAbilityClass, randomAbilityName);
-        //console.log(randomAbilityName, ", ", randomAbilityClass, ", ", randomAbilityRank, ", ", randomAbilityGames);
-        /*
-        // Fetch a random ability on page load
-        fetch('/random_ability')
-            .then(response => response.json())
-            .then(data => {
-                if (data.ability) {
-                    console.log('Random Ability:', data.ability);  // Display random ability in console or use it as needed
-                }
+      function searchAbilities(query) {
+        if (query.length > 0) {
+          fetch(`/search_abilities?query=${query}`)
+            .then((response) => response.json())
+            .then((data) => {
+              displayResults(data); // Call the function to display results
             })
-            .catch(error => console.error('Error fetching random ability:', error));
-        */
-    });
+            .catch((error) => console.error("Error:", error));
+        } else {
+          document.getElementById("dropdown").style.display = "none"; // Hide dropdown when query is empty
+        }
+      }
+    </script>
 
+    <div id="hiddenData" style="display: none">
+      <span id="randomAbilityName"></span>
+      <span id="randomAbilityClass"></span>
+      <span id="randomAbilityRank"></span>
+      <span id="randomAbilityGame1"></span>
+      <span id="randomAbilityGame2"></span>
+    </div>
 
-    function searchAbilities(query) {
-            if (query.length > 0) {
-                fetch(`/search_abilities?query=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        displayResults(data);  // Call the function to display results
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                document.getElementById('dropdown').style.display = 'none';  // Hide dropdown when query is empty
-            }
-}
-</script>
-
-    <div id="hiddenData" style="display: none;">
-        <span id="randomAbilityName"></span>
-        <span id="randomAbilityClass"></span>
-        <span id="randomAbilityRank"></span>
-        <span id="randomAbilityGame1"></span>
-        <span id="randomAbilityGame2"></span>
+    <div id="winModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+        <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; color: black">
+            <h2>Congratulations!</h2>
+            <p>You've guessed the ability correctly!</p>
+            <button onclick="closeWinModal()">Close</button>
+        </div>
     </div>
 
     <div id="result">
-        <h3>Results:</h3>
-        <p>Ability: <span id="resultAbility"></span></p>
-        <p>Class: <span id="resultClass"></span></p>
-        <p>Rank: <span id="resultRank"></span></p>
-        <p>Game 1: <span id="resultGame1"></span></p>
-        <p>Game 2: <span id="resultGame2"></span></p>
+      <h3>Results:</h3>
+      <p>Ability: <span id="resultAbility"></span></p>
+      <p>Class: <span id="resultClass"></span></p>
+      <p>Rank: <span id="resultRank"></span></p>
+      <p>Game 1: <span id="resultGame1"></span></p>
+      <p>Game 2: <span id="resultGame2"></span></p>
     </div>
 
-    <div id="history"></div>
+        <!-- History Section -->
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Ability</th>
+                    <th>Class</th>
+                    <th>Rank</th>
+                    <th>Game 1</th>
+                    <th>Game 2</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody">
+                <!-- History entries will be dynamically inserted here -->
+            </tbody>
+        </table>
+    <style>
+        /* History Table Styles */
+        #historyTable {
+        margin: 20px auto; /* Center the table */
+        border-collapse: collapse; /* Optional: Makes the table look cleaner */
+        width: 80%; /* Adjust the width as needed */
+    }
     
+    #historyTable th, 
+    #historyTable td {
+        padding: 10px; /* Add some padding to cells */
+        text-align: center; /* Center align text within cells */
+        border: 1px solid #fff; /* Add a border for better visibility (optional) */
+    }
+    
+    #historyTable th {
+        background-color: rgba(255, 255, 255, 0.1); /* Slightly visible header background */
+    }
+    
+    /* Style for table rows */
+    #historyTable tr {
+        border-bottom: 1px solid white; /* Border between rows */
+    }
+    
+    /* Hover effect for rows */
+    #historyTable tr:hover {
+        background-color: rgba(255, 255, 255, 0.1); /* Slight hover effect for better interactivity */
+    }
+    
+    /* Table header styles */
+    #historyTable th {
+        padding: 10px; /* Padding for table headers */
+    }
+    
+    /* Table data styles */
+    #historyTable td {
+        padding: 10px; /* Padding for table data */
+    }
+    </style>
 
     <script>
-        let history = [];
-        let guessedName = null;
-        let guessedClass = null;
-        let guessedRank = null;
-        let guessedGame1 = null;
-        let guessedGame2 = null;
+      let history = [];
+      let guessedName = null;
+      let guessedClass = null;
+      let guessedRank = null;
+      let guessedGame1 = null;
+      let guessedGame2 = null;
 
-        document.getElementById('abilitySearch').addEventListener('input', function () {
-            const query = this.value;
-            if (query.length > 2) {
-                fetch(`/search?ability=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        displayResults(data);
-                    });
-            }
+      document
+        .getElementById("abilitySearch")
+        .addEventListener("input", function () {
+          const query = this.value;
+          if (query.length > 2) {
+            fetch(`/search?ability=${query}`)
+              .then((response) => response.json())
+              .then((data) => {
+                displayResults(data);
+              });
+          }
         });
 
-        function getFullAbility(abilityName, callback) {
-    fetch(`/get_full_ability?ability_name=${abilityName}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error(data.error);
-                // Reset values if not found
-                guessedName = null;
-                guessedClass = null;
-                guessedRank = null;
-                guessedGame1 = null;
-                guessedGame2 = null;
-                callback(); // Call the callback with no data
-            } else {
-                // Store the values in the global variables
-                guessedName = data.name;
-                guessedClass = data.class;
-                guessedRank = data.rank;
-                guessedGame1 = data.game1;
-                guessedGame2 = data.game2;
+        function playWinSound() {
+    const audio = new Audio('/static/audio/win-sound.mp3'); // Updated path
+    audio.play().catch(error => {
+        console.error('Error playing audio:', error);
+    });
+}
 
-                console.log("Fetched ability data:", guessedName, guessedClass, guessedRank, guessedGame1, guessedGame2);
-                callback(); // Call the callback after fetching
+      function getFullAbility(abilityName, callback) {
+        fetch(`/get_full_ability?ability_name=${abilityName}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              console.error(data.error);
+              // Reset values if not found
+              guessedName = null;
+              guessedClass = null;
+              guessedRank = null;
+              guessedGame1 = null;
+              guessedGame2 = null;
+              callback(); // Call the callback with no data
+            } else {
+              // Store the values in the global variables
+              guessedName = data.name;
+              guessedClass = data.class;
+              guessedRank = data.rank;
+              guessedGame1 = data.game1;
+              guessedGame2 = data.game2;
+
+              console.log(
+                "Fetched ability data:",
+                guessedName,
+                guessedClass,
+                guessedRank,
+                guessedGame1,
+                guessedGame2
+              );
+              callback(); // Call the callback after fetching
             }
-        })
-        .catch(error => {
-            console.error('Error fetching ability data:', error);
+          })
+          .catch((error) => {
+            console.error("Error fetching ability data:", error);
             // Reset values on fetch error
             guessedName = null;
             guessedClass = null;
@@ -179,210 +365,293 @@
             guessedGame1 = null;
             guessedGame2 = null;
             callback(); // Call the callback with no data
-        });
-}
+          });
+      }
 
+      function displayResults(data) {
+        const dropdown = document.getElementById("dropdown");
+        dropdown.innerHTML = ""; // Clear existing dropdown
 
-
-        function displayResults(data) {
-            const dropdown = document.getElementById('dropdown');
-            dropdown.innerHTML = '';  // Clear existing dropdown
-
-            if (data.length > 0) {
-                dropdown.style.display = 'block';  // Show the dropdown if there are results
-                data.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    li.onclick = function() {
-                        /*
-                        console.log("Doing the thing!");
-                        console.log(item);
-                        console.log(item.ability);
-                        guessedName = item.ability;
-                        guessedClass = item.class;
-                        guessedRank = item.rank;
-                        guessedGame1 = item.game1;
-                        guessedGame2 = item.game2;
-                        */
-                        checkAbility(item);  // Check the ability when clicked
-                        dropdown.style.display = 'none';  // Hide the dropdown after selection
-                    };
-                    dropdown.appendChild(li);
-                });
-            } else {
-                dropdown.style.display = 'none';  // Hide dropdown if no results
-            }
+        if (data.length > 0) {
+          dropdown.style.display = "block"; // Show the dropdown if there are results
+          data.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            li.onclick = function () {
+              checkAbility(item); // Check the ability when clicked
+              dropdown.style.display = "none"; // Hide the dropdown after selection
+            };
+            dropdown.appendChild(li);
+          });
+        } else {
+          dropdown.style.display = "none"; // Hide dropdown if no results
         }
-        
-            function checkAbility(selectedAbility) {
+      }
+
+      function checkAbility(selectedAbility) {
+        let stringy_boi = selectedAbility.toString().trim();
+
+        getFullAbility(stringy_boi, () => {
+          console.log(
+            guessedName,
+            ", ",
+            guessedClass,
+            ", ",
+            guessedRank,
+            ", ",
+            guessedGame1,
+            ", ",
+            guessedGame2
+          );
+
+          const hiddenAbilityName =
+            document.getElementById("randomAbilityName").innerText;
+          const hiddenAbilityClass =
+            document.getElementById("randomAbilityClass").innerText;
+          const hiddenAbilityRank =
+            document.getElementById("randomAbilityRank").innerText;
+          const hiddenAbilityGame1 =
+            document.getElementById("randomAbilityGame1").innerText;
+          const hiddenAbilityGame2 =
+            document.getElementById("randomAbilityGame2").innerText;
+
+          if (selectedAbility === hiddenAbilityName) {
+            document.getElementById(
+              "resultAbility"
+            ).innerHTML = `<span style="color: green;">${selectedAbility}</span>`;
+            document.getElementById(
+              "resultClass"
+            ).innerHTML = `<span style="color: green;">${hiddenAbilityClass}</span>`;
+            document.getElementById(
+              "resultRank"
+            ).innerHTML = `<span style="color: green;">${hiddenAbilityRank}</span>`;
+            document.getElementById(
+              "resultGame1"
+            ).innerHTML = `<span style="color: green;">${hiddenAbilityGame1}</span>`;
+            document.getElementById(
+              "resultGame2"
+            ).innerHTML = `<span style="color: green;">${hiddenAbilityGame2}</span>`;
+
+            playWinSound();
+            document.getElementById("winModal").style.display = "flex";
             
-            let stringy_boi = selectedAbility.toString().trim();
+          } else {
+            // Handle incorrect guesses
+            document.getElementById(
+              "resultAbility"
+            ).innerHTML = `<span style="color: red;">${selectedAbility}</span>`;
 
-            getFullAbility(stringy_boi, () => { 
-
-                console.log(guessedName, ", ", guessedClass, ", ", guessedRank, ", ", guessedGame1, ", ", guessedGame2);
-            
-            const hiddenAbilityName = document.getElementById('randomAbilityName').innerText;
-            const hiddenAbilityClass = document.getElementById('randomAbilityClass').innerText;
-            const hiddenAbilityRank = document.getElementById('randomAbilityRank').innerText;
-            const hiddenAbilityGame1 = document.getElementById('randomAbilityGame1').innerText;
-            const hiddenAbilityGame2 = document.getElementById('randomAbilityGame2').innerText;
-
-            if (selectedAbility === hiddenAbilityName) {
-                document.getElementById('resultAbility').innerHTML = `<span style="color: green;">${selectedAbility}</span>`;
-                document.getElementById('resultClass').innerHTML = `<span style="color: green;">${hiddenAbilityClass}</span>`;
-                document.getElementById('resultRank').innerHTML = `<span style="color: green;">${hiddenAbilityRank}</span>`;
-                document.getElementById('resultGame1').innerHTML = `<span style="color: green;">${hiddenAbilityGame1}</span>`;
-                document.getElementById('resultGame2').innerHTML = `<span style="color: green;">${hiddenAbilityGame2}</span>`;
+            if (guessedClass === hiddenAbilityClass) {
+              document.getElementById(
+                "resultClass"
+              ).innerHTML = `<span style="color: green;">${guessedClass}</span>`;
             } else {
-                // Handle incorrect guesses
-                document.getElementById('resultAbility').innerHTML = `<span style="color: red;">${selectedAbility}</span>`;
-
-                if ( guessedClass === hiddenAbilityClass )
-                {
-                    document.getElementById('resultClass').innerHTML = `<span style="color: green;">${guessedClass}</span>`;
-                }
-                else
-                {
-                    document.getElementById('resultClass').innerHTML = `<span style="color: red;">${guessedClass}</span>`;
-                }
-
-                if ( guessedRank === hiddenAbilityRank )
-                {
-                    document.getElementById('resultRank').innerHTML = `<span style="color: green;">${guessedRank}</span>`;
-                }
-                else
-                {
-                    document.getElementById('resultRank').innerHTML = `<span style="color: red;">${guessedRank}</span>`;
-                }
-
-                if ( guessedGame1 === hiddenAbilityGame1 && guessedGame2 === hiddenAbilityGame2 )
-                {
-                    document.getElementById('resultGame1').innerHTML = `<span style="color: green;">${hiddenAbilityGame1}</span>`;
-                    document.getElementById('resultGame2').innerHTML = `<span style="color: green;">${guessedGame2}</span>`;
-                }
-                else if ( guessedGame1 === hiddenAbilityGame1 && guessedGame2 != hiddenAbilityGame2 )
-                {
-                    document.getElementById('resultGame1').innerHTML = `<span style="color: green;">${hiddenAbilityGame1}</span>`;
-                    document.getElementById('resultGame2').innerHTML = `<span style="color: red;">${guessedGame2}</span>`;
-                }
-                else if ( guessedGame2 === hiddenAbilityGame2 && guessedGame1 != hiddenAbilityGame1 )
-                {
-                    document.getElementById('resultGame1').innerHTML = `<span style="color: red;">${guessedGame1}</span>`;
-                    document.getElementById('resultGame2').innerHTML = `<span style="color: green;">${guessedGame2}</span>`;
-                }
-                else if ( guessedGame1 != hiddenAbilityGame1 && guessedGame2 != hiddenAbilityGame2 )
-                {
-                    console.log(guessedGame1, " is not equal to ", hiddenAbilityGame1, " and ", guessedGame2, " is not equal to ", hiddenAbilityGame2, "!");
-                    document.getElementById('resultGame1').innerHTML = `<span style="color: red;">${guessedGame1}</span>`;
-                    document.getElementById('resultGame2').innerHTML = `<span style="color: red;">${guessedGame2}</span>`;
-                }
-
+              document.getElementById(
+                "resultClass"
+              ).innerHTML = `<span style="color: red;">${guessedClass}</span>`;
             }
-            // Update history
-            updateHistory(selectedAbility, guessedClass, guessedRank, guessedGame1, guessedGame2, hiddenAbilityName, hiddenAbilityClass, hiddenAbilityRank, hiddenAbilityGame1, hiddenAbilityGame2);
 
-            });
-            
-            //getFullAbility(selectedAbility);
-}
+            if (guessedRank === hiddenAbilityRank) {
+              document.getElementById(
+                "resultRank"
+              ).innerHTML = `<span style="color: green;">${guessedRank}</span>`;
+            } else {
+              document.getElementById(
+                "resultRank"
+              ).innerHTML = `<span style="color: red;">${guessedRank}</span>`;
+            }
 
+            if (
+              guessedGame1 === hiddenAbilityGame1 &&
+              guessedGame2 === hiddenAbilityGame2
+            ) {
+              document.getElementById(
+                "resultGame1"
+              ).innerHTML = `<span style="color: green;">${hiddenAbilityGame1}</span>`;
+              document.getElementById(
+                "resultGame2"
+              ).innerHTML = `<span style="color: green;">${guessedGame2}</span>`;
+            } else if (
+              guessedGame1 === hiddenAbilityGame1 &&
+              guessedGame2 != hiddenAbilityGame2
+            ) {
+              document.getElementById(
+                "resultGame1"
+              ).innerHTML = `<span style="color: green;">${hiddenAbilityGame1}</span>`;
+              document.getElementById(
+                "resultGame2"
+              ).innerHTML = `<span style="color: red;">${guessedGame2}</span>`;
+            } else if (
+              guessedGame2 === hiddenAbilityGame2 &&
+              guessedGame1 != hiddenAbilityGame1
+            ) {
+              document.getElementById(
+                "resultGame1"
+              ).innerHTML = `<span style="color: red;">${guessedGame1}</span>`;
+              document.getElementById(
+                "resultGame2"
+              ).innerHTML = `<span style="color: green;">${guessedGame2}</span>`;
+            } 
+            else if ( hiddenAbilityGame2 === "N/A" && ( guessedGame1 === "XCOM: Enemy Within" || guessedGame2 === "XCOM: Enemy Within"))
+            {
+                document.getElementById(
+                "resultGame1"
+              ).innerHTML = `<span style="color: green;">${guessedGame1}</span>`;
+              document.getElementById(
+                "resultGame2"
+              ).innerHTML = `<span style="color: green;">${guessedGame2}</span>`;
+            }
+            else if (
+              guessedGame1 != hiddenAbilityGame1 &&
+              guessedGame2 != hiddenAbilityGame2
+            ) {
+              console.log(
+                guessedGame1,
+                " is not equal to ",
+                hiddenAbilityGame1,
+                " and ",
+                guessedGame2,
+                " is not equal to ",
+                hiddenAbilityGame2,
+                "!"
+              );
+              document.getElementById(
+                "resultGame1"
+              ).innerHTML = `<span style="color: red;">${guessedGame1}</span>`;
+              document.getElementById(
+                "resultGame2"
+              ).innerHTML = `<span style="color: red;">${guessedGame2}</span>`;
+            }
+          }
+          // Update history
+          updateHistory(
+            selectedAbility,
+            guessedClass,
+            guessedRank,
+            guessedGame1,
+            guessedGame2,
+            hiddenAbilityName,
+            hiddenAbilityClass,
+            hiddenAbilityRank,
+            hiddenAbilityGame1,
+            hiddenAbilityGame2
+          );
+        });
 
+        //getFullAbility(selectedAbility);
+      }
 
-function updateHistory(selectedAbility, className, rank, game1, game2, hiddenAbilityName, hiddenAbilityClass, hiddenAbilityRank, hiddenAbilityGame1, hiddenAbilityGame2) {
-    history.push({
-    ability: selectedAbility,
-    class: guessedClass,
-    rank: guessedRank,
-    isCorrect: (selectedAbility === hiddenAbilityName),
-    classIsCorrect: (guessedClass === hiddenAbilityClass),
-    rankIsCorrect: (guessedRank === hiddenAbilityRank),
-    game1IsCorrect: (game1 === hiddenAbilityGame1),
-    game2IsCorrect: (game2 === hiddenAbilityGame2),
-    game1: game1,
-    game2: game2
-});
-    displayHistory();
-}
+      function updateHistory(
+        selectedAbility,
+        className,
+        rank,
+        game1,
+        game2,
+        hiddenAbilityName,
+        hiddenAbilityClass,
+        hiddenAbilityRank,
+        hiddenAbilityGame1,
+        hiddenAbilityGame2
+      ) {
+        history.push({
+          ability: selectedAbility,
+          class: guessedClass,
+          rank: guessedRank,
+          isCorrect: selectedAbility === hiddenAbilityName,
+          classIsCorrect: guessedClass === hiddenAbilityClass,
+          rankIsCorrect: guessedRank === hiddenAbilityRank,
+          game1IsCorrect: game1 === hiddenAbilityGame1,
+          game2IsCorrect: game2 === hiddenAbilityGame2,
+          game1: game1,
+          game2: game2,
+        });
+        displayHistory();
+      }
 
-function displayHistory() {
-    const historyElement = document.getElementById('history'); // Make sure this element exists in your HTML
-    historyElement.innerHTML = ''; // Clear existing history
+      function displayHistory() {
+    const historyBody = document.getElementById('historyBody'); // Get the tbody element
+    historyBody.innerHTML = ''; // Clear existing history
 
     history.forEach(entry => {
-        const historyItem = document.createElement('div');
+        const historyRow = document.createElement('tr'); // Create a new table row
 
-        // Create spans for ability, class, rank, and games with corresponding colors
-        const abilitySpan = document.createElement('span');
-        abilitySpan.textContent = entry.ability;
-        abilitySpan.style.color = entry.isCorrect ? 'green' : 'red'; // Adjust color based on correctness
+        // Create table data for each entry
+        const abilityCell = document.createElement('td');
+        abilityCell.textContent = entry.ability;
+        abilityCell.style.backgroundColor = entry.isCorrect ? 'green' : 'red'; // Change cell color based on correctness
 
-        const classSpan = document.createElement('span');
-        classSpan.textContent = ` - Class: ${entry.class}`;
-        classSpan.style.color = entry.classIsCorrect ? 'green' : 'red'; // Adjust color based on correctness
+        const classCell = document.createElement('td');
+        classCell.textContent = entry.class;
+        classCell.style.backgroundColor = entry.classIsCorrect ? 'green' : 'red'; // Change cell color based on correctness
 
-        const rankSpan = document.createElement('span');
-        rankSpan.textContent = `, Rank: ${entry.rank}`;
-        rankSpan.style.color = entry.rankIsCorrect ? 'green' : 'red'; // Adjust color based on correctness
+        const rankCell = document.createElement('td');
+        rankCell.textContent = entry.rank;
+        rankCell.style.backgroundColor = entry.rankIsCorrect ? 'green' : 'red'; // Change cell color based on correctness
 
-        const game1Span = document.createElement('span');
-        game1Span.textContent = `, Game 1: ${entry.game1}`;
-        game1Span.style.color = (entry.game1IsCorrect) ? 'green' : 'red'; // Adjust color based on correctness
+        const game1Cell = document.createElement('td');
+        game1Cell.textContent = entry.game1;
+        game1Cell.style.backgroundColor = entry.game1IsCorrect ? 'green' : 'red'; // Change cell color based on correctness
 
-        const game2Span = document.createElement('span');
-        game2Span.textContent = `, Game 2: ${entry.game2}`;
-        game2Span.style.color = (entry.game2IsCorrect) ? 'green' : 'red'; // Adjust color based on correctness
+        const game2Cell = document.createElement('td');
+        game2Cell.textContent = entry.game2;
+        game2Cell.style.backgroundColor = entry.game2IsCorrect ? 'green' : 'red'; // Change cell color based on correctness
 
-        // Append spans to history item
-        historyItem.appendChild(abilitySpan);
-        historyItem.appendChild(classSpan);
-        historyItem.appendChild(rankSpan);
-        historyItem.appendChild(game1Span);
-        historyItem.appendChild(game2Span);
+        // Append cells to the row
+        historyRow.appendChild(abilityCell);
+        historyRow.appendChild(classCell);
+        historyRow.appendChild(rankCell);
+        historyRow.appendChild(game1Cell); // Separate cell for Game 1
+        historyRow.appendChild(game2Cell); // Separate cell for Game 2
 
-        // Append history item to history element
-        historyElement.appendChild(historyItem);
+        // Append the row to the table body
+        historyBody.appendChild(historyRow);
     });
 }
 
+function closeWinModal() {
+    document.getElementById("winModal").style.display = "none";
+}
 
 
 
-        function addAbilityToTable(ability) {
-            const tbody = document.querySelector('#ability-table tbody');
-            const row = document.createElement('tr');
+      function addAbilityToTable(ability) {
+        const tbody = document.querySelector("#ability-table tbody");
+        const row = document.createElement("tr");
 
-            // Ability Name
-            const abilityNameCell = document.createElement('td');
-            abilityNameCell.textContent = ability[1];
-            row.appendChild(abilityNameCell);
+        // Ability Name
+        const abilityNameCell = document.createElement("td");
+        abilityNameCell.textContent = ability[1];
+        row.appendChild(abilityNameCell);
 
-            // Class
-            const classCell = document.createElement('td');
-            classCell.textContent = ability[2];
-            row.appendChild(classCell);
+        // Class
+        const classCell = document.createElement("td");
+        classCell.textContent = ability[2];
+        row.appendChild(classCell);
 
-            // Rank
-            const rankCell = document.createElement('td');
-            rankCell.textContent = ability[3];
-            row.appendChild(rankCell);
+        // Rank
+        const rankCell = document.createElement("td");
+        rankCell.textContent = ability[3];
+        row.appendChild(rankCell);
 
-            // Game(s)
-            const gamesCell = document.createElement('td');
-            gamesCell.textContent = ability[4]; // Assuming game(s) are in column 4
-            row.appendChild(gamesCell);
+        // Game(s)
+        const gamesCell = document.createElement("td");
+        gamesCell.textContent = ability[4]; // Assuming game(s) are in column 4
+        row.appendChild(gamesCell);
 
-            tbody.appendChild(row);
+        tbody.appendChild(row);
+      }
+
+      // Close the dropdown if the user clicks outside of it
+      document.addEventListener("click", function (event) {
+        const dropdown = document.getElementById("dropdown");
+        const searchInput = document.getElementById("abilitySearch");
+        if (
+          !searchInput.contains(event.target) &&
+          !dropdown.contains(event.target)
+        ) {
+          dropdown.style.display = "none"; // Hide dropdown
         }
-
-        // Close the dropdown if the user clicks outside of it
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('dropdown');
-            const searchInput = document.getElementById('abilitySearch');
-            if (!searchInput.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.style.display = 'none';  // Hide dropdown
-            }
-        });
+      });
     </script>
-</body>
+  </body>
 </html>
