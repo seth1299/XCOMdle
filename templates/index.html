@@ -455,7 +455,16 @@
               document.getElementById(
                 "resultGame2"
               ).innerHTML = `<span style="color: green;">${guessedGame2}</span>`;
-            } else if (
+            } else if ( guessedGame2 === "XCOM: Enemy Within" && hiddenAbilityGame2 === "N/A")
+            {
+                document.getElementById(
+                "resultGame1"
+              ).innerHTML = `<span style="color: red;">${guessedGame1}</span>`;
+              document.getElementById(
+                "resultGame2"
+              ).innerHTML = `<span style="color: yellow;">${guessedGame2}</span>`;
+            }
+            else if (
               guessedGame1 === hiddenAbilityGame1 &&
               guessedGame2 != hiddenAbilityGame2
             ) {
