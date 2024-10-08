@@ -1,1 +1,1 @@
-<process type>:web <command>
+python manage.py runserver
