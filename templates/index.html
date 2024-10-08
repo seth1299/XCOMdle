@@ -577,7 +577,10 @@
 
         const game2Cell = document.createElement('td');
         game2Cell.textContent = entry.game2;
-        game2Cell.style.backgroundColor = entry.game2IsCorrect ? 'green' : 'red'; // Change cell color based on correctness
+        if ( entry.game2 === "XCOM: Enemy Within" && entry.randomAbilityGame1 === "XCOM: Enemy Within" )
+            game2Cell.style.backgroundColor = 'yellow';
+        else
+            game2Cell.style.backgroundColor = entry.game2IsCorrect ? 'green' : 'red'; // Change cell color based on correctness
 
         // Append cells to the row
         historyRow.appendChild(abilityCell);
