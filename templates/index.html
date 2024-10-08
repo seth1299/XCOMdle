@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ability Search</title>
-    <style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>XCOMDle: Guess an XCOM ability!</title>
+        <style>
       /* Style the search bar */
       #abilitySearch {
         width: 300px;
@@ -84,59 +84,54 @@
       }
     </style>
 
+        <!-- Settings button -->
+        <button class="settingsButton" onclick="toggleSettingsMenu()">
+            Settings
+        </button>
 
+        <!-- Settings menu -->
+        <div id="settingsMenu">
+            <h3>Settings</h3>
+            <label for="fontSelect">Font:</label>
+            <select id="fontSelect" onchange="changeFont()">
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+            <br /><br />
+            <label for="fontSize">Font Size:</label>
+            <input
+                type="number"
+                id="fontSize"
+                value="16"
+                onchange="changeFontSize()" />
+            <br /><br />
+            <label for="fontColor">Font Color:</label>
+            <input type="color" id="fontColor" onchange="changeFontColor()" />
+            <br /><br />
+            <label for="backgroundColor">Background Color:</label>
+            <input
+                type="color"
+                id="backgroundColor"
+                onchange="changeBackgroundColor()" />
+            <br /><br />
+            <button onclick="toggleSettingsMenu()">Close</button>
+        </div>
 
-    <!-- Settings button -->
-    <button class="settingsButton" onclick="toggleSettingsMenu()">
-      Settings
-    </button>
+    </head>
+    <body>
+        <h1>Guess an XCOM Ability:</h1>
+        <input
+            type="text"
+            id="abilitySearch"
+            placeholder="Search abilities..."
+            oninput="searchAbilities(this.value)" />
 
-    <!-- Settings menu -->
-    <div id="settingsMenu">
-      <h3>Settings</h3>
-      <label for="fontSelect">Font:</label>
-      <select id="fontSelect" onchange="changeFont()">
-        <option value="Arial">Arial</option>
-        <option value="Courier New">Courier New</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Verdana">Verdana</option>
-      </select>
-      <br /><br />
-      <label for="fontSize">Font Size:</label>
-      <input
-        type="number"
-        id="fontSize"
-        value="16"
-        onchange="changeFontSize()"
-      />
-      <br /><br />
-      <label for="fontColor">Font Color:</label>
-      <input type="color" id="fontColor" onchange="changeFontColor()" />
-      <br /><br />
-      <label for="backgroundColor">Background Color:</label>
-      <input
-        type="color"
-        id="backgroundColor"
-        onchange="changeBackgroundColor()"
-      />
-      <br /><br />
-      <button onclick="toggleSettingsMenu()">Close</button>
-    </div>
-    
-  </head>
-  <body>
-    <h1>Search for an XCOM Ability</h1>
-    <input
-      type="text"
-      id="abilitySearch"
-      placeholder="Search abilities..."
-      oninput="searchAbilities(this.value)"
-    />
+        <ul id="dropdown"></ul>
 
-    <ul id="dropdown"></ul>
-
-    <script>
+        <script>
       function toggleSettingsMenu() {
         const menu = document.getElementById("settingsMenu");
         menu.style.display =
@@ -200,6 +195,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         getRandomAbility();
         console.log(randomAbilityName);
+        numberOfGuesses = 0;
       });
 
       function searchAbilities(query) {
@@ -216,30 +212,32 @@
       }
     </script>
 
-    <div id="hiddenData" style="display: none">
-      <span id="randomAbilityName"></span>
-      <span id="randomAbilityClass"></span>
-      <span id="randomAbilityRank"></span>
-      <span id="randomAbilityGame1"></span>
-      <span id="randomAbilityGame2"></span>
-    </div>
-
-    <div id="winModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
-        <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; color: black">
-            <h2>Congratulations!</h2>
-            <p>You've guessed the ability correctly!</p>
-            <button onclick="closeWinModal()">Close</button>
+        <div id="hiddenData" style="display: none">
+            <span id="randomAbilityName"></span>
+            <span id="randomAbilityClass"></span>
+            <span id="randomAbilityRank"></span>
+            <span id="randomAbilityGame1"></span>
+            <span id="randomAbilityGame2"></span>
         </div>
-    </div>
 
-    <div id="result">
-      <h3>Results:</h3>
-      <p>Ability: <span id="resultAbility"></span></p>
-      <p>Class: <span id="resultClass"></span></p>
-      <p>Rank: <span id="resultRank"></span></p>
-      <p>Game 1: <span id="resultGame1"></span></p>
-      <p>Game 2: <span id="resultGame2"></span></p>
-    </div>
+        <div id="winModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+            <div
+                style="background: white; padding: 20px; border-radius: 8px; text-align: center; color: black">
+                <h2>Congratulations!</h2>
+                <p>You've guessed the ability correctly</p>
+                <button onclick="closeWinModal()">Close</button>
+            </div>
+        </div>
+
+        <div id="result">
+            <h3>Results:</h3>
+            <p>Ability: <span id="resultAbility"></span></p>
+            <p>Class: <span id="resultClass"></span></p>
+            <p>Rank: <span id="resultRank"></span></p>
+            <p>Game 1: <span id="resultGame1"></span></p>
+            <p>Game 2: <span id="resultGame2"></span></p>
+        </div>
 
         <!-- History Section -->
         <table id="historyTable">
@@ -256,7 +254,7 @@
                 <!-- History entries will be dynamically inserted here -->
             </tbody>
         </table>
-    <style>
+        <style>
         /* History Table Styles */
         #historyTable {
         margin: 20px auto; /* Center the table */
@@ -296,13 +294,14 @@
     }
     </style>
 
-    <script>
+        <script>
       let history = [];
       let guessedName = null;
       let guessedClass = null;
       let guessedRank = null;
       let guessedGame1 = null;
       let guessedGame2 = null;
+      let numberOfGuesses = 0;
 
       document
         .getElementById("abilitySearch")
@@ -389,6 +388,7 @@
       }
 
       function checkAbility(selectedAbility) {
+        numberOfGuesses += 1;
         let stringy_boi = selectedAbility.toString().trim();
 
         getFullAbility(stringy_boi, () => {
@@ -433,7 +433,8 @@
             ).innerHTML = `<span style="color: green;">${hiddenAbilityGame2}</span>`;
 
             playWinSound();
-            document.getElementById("winModal").style.display = "flex";
+            showWinModal();
+            //document.getElementById("winModal").style.display = "flex";
             
           } else {
             // Handle incorrect guesses
@@ -608,6 +609,34 @@
     });
 }
 
+// Function to show win modal and display the number of guesses
+function showWinModal() {
+    const winModal = document.getElementById("winModal");
+    const modalContent = winModal.querySelector("div"); // Assuming the modal's main content is in a <div>
+
+    // Add the number of guesses to the modal content
+    if ( numberOfGuesses != 1 )
+    {
+        modalContent.innerHTML = `
+        <h2>Congratulations!</h2>
+        <p>You've guessed the ability correctly in ${numberOfGuesses} guesses!</p>
+        <button onclick="closeWinModal()">Close</button>
+        `;
+    }
+    else
+    {
+        modalContent.innerHTML = `
+        <h2>Congratulations!</h2>
+        <p>You've guessed the ability correctly in 1 guess!</p>
+        <button onclick="closeWinModal()">Close</button>
+        `;
+    }
+    
+
+    // Show the modal
+    winModal.style.display = "flex";
+}
+
 function closeWinModal() {
     document.getElementById("winModal").style.display = "none";
 }
@@ -653,5 +682,5 @@ function closeWinModal() {
         }
       });
     </script>
-  </body>
+    </body>
 </html>

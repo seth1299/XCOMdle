@@ -123,7 +123,10 @@ def scrape_data(conn, class_name, url, game1, game2 = None):
                                     name = name[0:name.index("(")]
                                 name = name.strip()
                                 if "&amp;" in name:
-                                    name = name.replace('&amp;', '&')
+                                    name = "Run And Gun (XCOM: Enemy Unknown)"
+                                    
+                                if name.lower == "run and gun":
+                                    name = "Run And Gun (XCOM 2)"
                                 
                                 if globalRankIndex >= len(ranks):
                                     if game2 != None:
@@ -200,6 +203,9 @@ def scrape_data(conn, class_name, url, game1, game2 = None):
                                             temp_string = name[0 : temp_index + 1] + name[temp_index + 1].upper() + name[temp_index + 2:]
                                             name = temp_string
                                             number_of_spaces -= 1
+                                            
+                                    if name == "Run And Gun":
+                                        name = "Run And Gun (XCOM 2)"
                                     
                                     if globalRankIndex >= len(ranks):
                                         if game2 != None:
