@@ -577,7 +577,7 @@
 
         const game2Cell = document.createElement('td');
         game2Cell.textContent = entry.game2;
-        if ( entry.game2 === "XCOM: Enemy Within" && entry.randomAbilityGame1 === "XCOM: Enemy Within" )
+        if ( entry.game2 === "XCOM: Enemy Within" && randomAbilityGame1 === "XCOM: Enemy Within" )
             game2Cell.style.backgroundColor = 'yellow';
         else
             game2Cell.style.backgroundColor = entry.game2IsCorrect ? 'green' : 'red'; // Change cell color based on correctness
