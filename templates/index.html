@@ -194,7 +194,6 @@
 
       document.addEventListener("DOMContentLoaded", function () {
         getRandomAbility();
-        console.log(randomAbilityName);
         numberOfGuesses = 0;
       });
 
@@ -343,15 +342,6 @@
               guessedRank = data.rank;
               guessedGame1 = data.game1;
               guessedGame2 = data.game2;
-
-              console.log(
-                "Fetched ability data:",
-                guessedName,
-                guessedClass,
-                guessedRank,
-                guessedGame1,
-                guessedGame2
-              );
               callback(); // Call the callback after fetching
             }
           })
@@ -392,18 +382,6 @@
         let stringy_boi = selectedAbility.toString().trim();
 
         getFullAbility(stringy_boi, () => {
-          console.log(
-            guessedName,
-            ", ",
-            guessedClass,
-            ", ",
-            guessedRank,
-            ", ",
-            guessedGame1,
-            ", ",
-            guessedGame2
-          );
-
           const hiddenAbilityName =
             document.getElementById("randomAbilityName").innerText;
           const hiddenAbilityClass =
@@ -506,16 +484,6 @@
               guessedGame1 != hiddenAbilityGame1 &&
               guessedGame2 != hiddenAbilityGame2
             ) {
-              console.log(
-                guessedGame1,
-                " is not equal to ",
-                hiddenAbilityGame1,
-                " and ",
-                guessedGame2,
-                " is not equal to ",
-                hiddenAbilityGame2,
-                "!"
-              );
               document.getElementById(
                 "resultGame1"
               ).innerHTML = `<span style="color: red;">${guessedGame1}</span>`;
