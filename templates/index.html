@@ -583,9 +583,12 @@
             game2Cell.style.backgroundColor = 'yellow';
             game2Cell.textContent.style.color = 'black';
         }
-            
         else
+        {
             game2Cell.style.backgroundColor = entry.game2IsCorrect ? 'green' : 'red'; // Change cell color based on correctness
+            game2Cell.textContent.style.color = 'white';
+        }
+            
 
         // Append cells to the row
         historyRow.appendChild(abilityCell);
