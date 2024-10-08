@@ -33,6 +33,6 @@ python app.py
 
 Flask will start running on localhost at a port, typically 5000. You should see output similar to this:
 * Running on http://127.0.0.1:5000/
-* 
+  
 Opening the Game in a Browser:
 Open a web browser and go to http://127.0.0.1:5000/ or instead, if you're using an IDE, just control+click on the "running on [X]" message and it will automatically open your default web browser and automatically open your webpage to the correct localhost. Now you're ready to play!
